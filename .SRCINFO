@@ -9,6 +9,8 @@ pkgbase = linux-firmware-amlogic-ophub-git
 	license = custom
 	makedepends = git
 	depends = linux-firmware
+	conflicts = linux-firmware-amlogic-ophub
+	replaces = linux-firmware-amlogic-ophub
 	options = !strip
 	source = git+https://github.com/ophub/firmware.git#branch=main
 	sha256sums = SKIP

@@ -8,6 +8,8 @@ arch=('any')
 makedepends=('git')
 url="https://github.com/ophub/firmware"
 license=('GPL2' 'GPL3' 'custom')
+conflicts=('linux-firmware-amlogic-ophub')
+replaces=('linux-firmware-amlogic-ophub')
 options=(!strip)
 source=("git+${url}.git#branch=main")
 sha256sums=('SKIP')
