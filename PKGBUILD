@@ -55,12 +55,17 @@ package() {
   cd firmware
   pacman -Ql linux-firmware | sed -n 's|^linux-firmware /usr/lib/\(firmware/.*\)|\1|p' | sort | uniq > linux-firmware.list
   local _file _target _link
+  if [[ "${CARCH}" == 'aarch64' ]]; then
+    local _nocomp='yes'
+  else
+    local _nocomp=''
+  fi
   for _file in $(find firmware); do
     grep -q "^${_file}\(.zst\|/\)\?$" linux-firmware.list && continue
     if [[ -L "${_file}" ]]; then
       echo "L: ${_file}"
       _target=$(readlink "${_file}")
-      if [[ -f "${_file}" ]]; then
+      if [[ -z "${_nocomp}" && -f "${_file}" ]]; then
         _target+='.zst'
         _file+='.zst'
       fi
@@ -69,8 +74,12 @@ package() {
       ln -s "${_target}" "${_link}"
     elif [[ -f "${_file}" ]]; then
       echo "F: ${_file}"
-      zstd --compress --quiet --stdout "${_file}" |
-        install -Dm644 /dev/stdin "${_prefix}/${_file}.zst"
+      if [[ "${_nocpm}" ]]; then
+          install -Dm644 "${_file}" "${_prefix}/${_file}.zst"
+      else
+        zstd --compress --quiet --stdout "${_file}" |
+          install -Dm644 /dev/stdin "${_prefix}/${_file}.zst"
+      fi
     else
       echo "D: ${_file}"
       install -d "${_prefix}/${_file}"
