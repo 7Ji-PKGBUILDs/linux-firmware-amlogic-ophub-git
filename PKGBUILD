@@ -75,7 +75,7 @@ package() {
     elif [[ -f "${_file}" ]]; then
       echo "F: ${_file}"
       if [[ "${_nocpm}" ]]; then
-          install -Dm644 "${_file}" "${_prefix}/${_file}.zst"
+        install -Dm644 "${_file}" "${_prefix}/${_file}"
       else
         zstd --compress --quiet --stdout "${_file}" |
           install -Dm644 /dev/stdin "${_prefix}/${_file}.zst"
