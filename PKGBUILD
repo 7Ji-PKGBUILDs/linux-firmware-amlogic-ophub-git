@@ -74,7 +74,7 @@ package() {
       ln -s "${_target}" "${_link}"
     elif [[ -f "${_file}" ]]; then
       echo "F: ${_file}"
-      if [[ "${_nocpm}" ]]; then
+      if [[ "${_nocomp}" ]]; then
         install -Dm644 "${_file}" "${_prefix}/${_file}"
       else
         zstd --compress --quiet --stdout "${_file}" |
